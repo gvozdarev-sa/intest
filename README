@@ -1,8 +1,0 @@
-
-Perl libs depends:
-
-    Capture::Tiny
-    Data::Dumper
-    JSON
-    Getopt::Long
-
