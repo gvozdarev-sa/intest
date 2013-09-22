@@ -61,7 +61,7 @@ sub main
     &Print( "===============================");
     &InitConf( );
 
-    &Print( &DumpHash( \%Conf));
+    #&Print( &DumpHash( \%Conf));
 
     my %Opts;
     my $res = &Framework::RunTest( $test, \%Opts);
