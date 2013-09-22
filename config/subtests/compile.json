@@ -1,0 +1,12 @@
+{
+    "name"          :   "compile",
+    "driver"        :   "compile",
+    "default_opts"  :
+    {
+        "src"       : "a.c",
+        "bin"       : "bin/a.out",
+        "compiler"  : "gcc",
+        "FLAGS"     : " -d -O2",
+        "libs"      : ""
+    }
+}

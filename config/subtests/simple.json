@@ -1,0 +1,7 @@
+{
+    "name"      : "simple",
+    "type"      : "bin",
+    "driver"    : "simple.pm",
+    "input"     : [ ],
+    "output"    : [ ],
+}

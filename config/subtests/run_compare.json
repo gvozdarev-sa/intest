@@ -1,0 +1,24 @@
+{
+    "name"          :   "run_compare",
+    "driver"        :   "run_compare",
+    "default_opts"  :
+    {
+        "bin"   :   "./bin/a.out",
+        "FLAGS" : "",
+        "code"  :
+        {
+            "type" : "int_eq",
+            "must" : 0
+        },
+        "stdout" :
+        {
+            "type" : "regex",
+            "must" : "OK"
+        },
+        "stderr" :
+        {
+            "type" : "regex",
+            "must" : "^$"
+        }
+    }
+}

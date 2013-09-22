@@ -1,0 +1,11 @@
+{
+    "name"         :   "prepare_ws",
+    "driver"       :   "prepare_ws",
+    "default_opts" :   
+    {
+        "clean_all"     : 1,
+        "dirs_to_mk"    : "",
+        "src_to_cp"     : "",
+        "conf_to_cp"    : ""
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "name"          :   "foreach_user",
+    "driver"        :   "foreach_user",
+    "default_opts"  :
+    {
+        "test"  : "verysimple",
+        "users" : "cfg/users.json"
+    }
+}

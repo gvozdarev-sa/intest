@@ -1,0 +1,57 @@
+{
+    "name"       :   "main_container",
+    "percentage" :
+    {
+        "type" : "copy",
+        "ids"  : [ 5]
+    },
+    "pass_if" :
+    {
+        "done" :
+        {
+            "type" : "bool",
+            "must" : 1,
+            "ids"  : [ 5]
+        }
+    },
+    "done_if" :
+    {
+        "done" :
+        {
+            "type" : "bool",
+            "must" : 1,
+            "ids"  : [ 0, 5]
+        }
+    },
+    "include" :
+    {
+        "0" :
+        {
+            "name" : "svn",
+            "type" : "subtest",
+            "opts" :
+            {
+                "update" : "ws"
+            }
+        },
+        "5" :
+        {
+            "name" : "foreach_user",
+            "type" : "subtest",
+            "opts" :
+            {
+                "test"  : "simple",
+                "users" : "cfg/users.json"
+            },
+            "depend_on" :
+            {
+                "code" :
+                {
+                    "type" : "code",
+                    "must" : "$PASS",
+                    "ids"  : [ 0]
+                }
+            }
+        }
+    }
+}

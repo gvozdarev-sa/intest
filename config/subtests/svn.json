@@ -1,0 +1,8 @@
+{
+    "name"          :   "svn",
+    "driver"        :   "svn",
+    "default_opts"  :
+    {
+        "update" : "src"
+    }
+}

@@ -1,0 +1,92 @@
+{
+    "name"              :   "simple",
+    "percentage" :
+    {
+        "type" : "copy",
+        "ids"  : [ 5]
+    },
+    "pass_if" :
+    {
+        "done" :
+        {
+            "type" : "bool",
+            "must" : 1,
+            "ids"  : [ 3,5]
+        },
+        "code" :
+        {
+            "type" : "code",
+            "must" : "$PASS",
+            "ids"  : [ 3,5]
+        }
+    },
+    "done_if" :
+    {
+        "done" :
+        {
+            "type" : "bool",
+            "must" : 1,
+            "ids"  : [ 0,10]
+        }
+    },
+    "include" :
+    {
+        "0" :
+        {
+            "name"      : "prepare_ws",
+            "type"      : "subtest",
+            "opts"      :
+            {
+                "clean_all"  : 1,
+                "dirs_to_mk" : "bin",
+                "src_to_cp"  : "a.c"
+            }
+        },
+        "3" :
+        {
+            "name"  : "compile",
+            "type"  : "subtest",
+            "depend_on" :
+            {
+                "code" :
+                {
+                    "type" : "code",
+                    "must" : "$PASS",
+                    "ids"  : [ 0]
+                }
+            }
+        },
+        "5" :
+        {
+            "name" : "simple_container",
+            "type" : "test",
+            "depend_on" :
+            {
+                "code" :
+                {
+                    "type" : "code",
+                    "must" : "$PASS",
+                    "ids"  : [ 3]
+                }
+            }
+        },
+        "10" :
+        {
+            "name"      : "clean_ws",
+            "type"      : "subtest",
+            "depend_on" :
+            {
+                "done"  :
+                {
+                    "type" : "bool",
+                    "must" : "1",
+                    "ids"  : [ 0]
+                }
+            },
+            "opts"      :
+            {
+                "clean_all" : 0
+            }
+        }
+    }
+}

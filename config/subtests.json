@@ -1,0 +1,11 @@
+{
+    "subtests":
+    [
+        "prepare_ws",
+        "clean_ws",
+        "svn",
+        "compile",
+        "run_compare",
+        "foreach_user"
+    ]
+}

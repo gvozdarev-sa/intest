@@ -1,0 +1,9 @@
+{
+    "name"          :   "clean_ws",
+    "driver"        :   "clean_ws",
+    "default_opts"  :
+    {
+        "clean_all"  : 1,
+        "dirs_to_rm" : ""
+    }
+}

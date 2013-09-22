@@ -1,0 +1,78 @@
+{
+    "name"              :   "simple_container",
+    "percentage" :
+    {
+        "type" : "passed_total",
+        "ids"  : [ 0,1,2]
+    },
+    "pass_if" :
+    {
+        "done" :
+        {
+            "type" : "bool",
+            "must" : 1,
+            "ids"  : [ 0, 1, 2]
+        },
+        "percentage" :
+        {
+            "type" : "int_gr",
+            "must" : "50",
+            "ids"  : [ -1]
+        }
+    },
+    "done_if" :
+    {
+        "done" :
+        {
+            "type" : "bool",
+            "must" : 1,
+            "ids"  : [ 0, 1, 2]
+        }
+    },
+    "include" :
+    {
+        "0" :
+        {
+            "name" : "run_compare",
+            "type" : "subtest",
+            "opts" :
+            {
+                "FLAGS" : "OK",
+                "stdout" :
+                {
+                    "type" : "regex",
+                    "must" : "OK"
+                }
+            }
+        },
+        "1" :
+        {
+            "name" : "run_compare",
+            "type" : "subtest",
+            "opts" :
+            {
+                "FLAGS" : "1",
+                "stdout" :
+                {
+                    "type" : "int_eq",
+                    "must" : "1"
+                }
+            }
+
+        },
+        "2" :
+        {
+            "name" : "run_compare",
+            "type" : "subtest",
+            "opts" :
+            {
+                "FLAGS" : "2",
+                "stdout" :
+                {
+                    "type" : "int_eq",
+                    "must" : "3"
+                }
+            }
+        }
+    }
+}
