@@ -38,7 +38,7 @@ use Conf; #FIXME
 
 our %State =
 (
-
+    deep => 0,
 );
 #####
 sub SetSrc
@@ -79,6 +79,20 @@ sub GetEmail
 {
     return $State{email};
 }
+###
+sub PushDeep
+{
+    $State{deep}++;
+}
 
+sub PopDeep
+{
+    $State{deep}--;
+}
+
+sub GetDeep
+{
+    return $State{deep};
+}
 
 1;

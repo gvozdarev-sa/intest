@@ -50,6 +50,7 @@ use JSON;
 
 use Errors;
 use Conf;
+use State;
 
 sub BlankRes
 {
@@ -61,13 +62,110 @@ sub BlankRes
 
     return $r_res;
 }
+# ---
+sub IsDone
+{
+    my $r_res = shift;
+    ###
+    return ( $r_res->{done}) ? ( 1) : ( 0);
+}
+
+sub SetDone
+{
+    my $r_res = shift;
+    my $done  = shift || 1;
+    ###
+    $r_res->{done} = $done;
+}
+# ---
+
+sub IsPassed
+{
+    my $r_res = shift;
+    ###
+    return ( $r_res->{code} == $PASS) ? ( 1) : ( 0);
+}
+sub IsFailed
+{
+    my $r_res = shift;
+    ###
+    return ( $r_res->{code} == $PASS) ? ( 0) : ( 1);
+}
+
+sub SetCode
+{
+    my $r_res = shift;
+    my $code  = shift;
+    ###
+    $r_res->{code} = $code;
+}
+
+sub GetStrCode
+{
+    my $r_res = shift;
+    ###
+    if ( $Errors::str_erros->{ $r_res->{code}})
+    {
+        return $Errors::str_erros->{ $r_res->{code}};
+    }
+    else
+    {
+        return "UNDEFCODE";
+    }
+}
+
+sub GetPercentage
+{
+    my $r_res    = shift;
+    ###
+    return $r_res->{percentage};
+}
+
+sub SetPercentage
+{
+    my $r_res    = shift;
+    my $percentage = shift;
+    ###
+    $r_res->{percentage} = $percentage;
+}
+
+sub GetShortReport
+{
+    my $r_res = shift;
+    ###
+    my $str = '';
+    if ( &IsDone( $r_res))
+    {
+        $str .= sprintf( "%-15s;", "Done");
+    }
+    else
+    {
+        $str .= sprintf( "%-15s;", "Is not done");
+    }
+
+    if ( &IsPassed( $r_res))
+    {
+        $str .= sprintf( "%-40s;", "passed");
+    }
+    else
+    {
+        $str .= sprintf( "%-40s;", "failed ( ".&GetStrCode( $r_res) . " )");
+    }
+
+    $str .= sprintf( "percentage: %02d;", &GetPercentage( $r_res));
+#    $str .= "\n";
+
+    return $str;
+}
+# ---
+
 
 sub Execute
 {
     my $cmd = shift;
     my %res;
 
-    &Print( "Execute : $cmd", 1);
+    &Print( "Execute : $cmd", 0);
     ( my $stdout, my $stderr, my $return) = capture  { system( $cmd)} ;
 
     $res{stdout} = $stdout;
@@ -296,6 +394,16 @@ sub Print
     my $msg     = shift;
     my $verbose = shift;
 
+    my @msgs = split( "\n", $msg);
+    if ( scalar @msgs > 1)
+    {
+        foreach my $sub_msg ( @msgs)
+        {
+            &Print( $sub_msg, $verbose);
+            return;
+        }
+    }
+
     $verbose = 1 if ( ! defined $verbose || $Conf{verbose});
 
     ( my $sec, my $min,my $hour, my $mday, my $mon, my $year, my $wday, my $yday, my $isdst) = localtime( time);
@@ -308,9 +416,11 @@ sub Print
     $caller = sprintf( "%-33s", $caller);
     $caller =  "\x1b[1;36m" . $caller . "\x1b[0m" if ( $Conf{color});
 
-    my $prefix;
-    $prefix  = $timestamp;
+    my $prefix = '';
+    $prefix .= $timestamp;
     $prefix .= " $caller : " if ( $Conf{debug});
+    $prefix .= '----' x &State::GetDeep( );
+    $prefix .= '> ';
 
     $msg = $prefix . $msg . "\n";
 

@@ -33,7 +33,8 @@ $DEPFAIL
 $COMPFAIL
 $CMPFAIL
 
-$FAIL);
+$FAIL
+);
 
 ###################################################
 use strict;
@@ -47,5 +48,16 @@ our $CMPFAIL    = 16;
 
 
 our $FAIL       = 256;
+
+our $str_errors =
+{
+    $PASS     => "PASS",
+    $BADTEST  => "BADTEST",
+    $RUNFAIL  => "RUNFAIL",
+    $COMPFAIL => "COMPFAIL",
+    $DEPFAIL  => "DEPFAIL",
+    $CMPFAIL  => "CMPFAIL",
+    $FAIL     => "FAIL",
+};
 
 1;

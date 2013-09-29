@@ -119,6 +119,7 @@ sub RunSubtest
         &Print( $r_res->{msg}, 0);
     }
 
+    &Print( &Utils::GetShortReport( $r_res));
 
     return $r_res;
 }
@@ -185,6 +186,8 @@ sub RunTest
     # merge opts
     $r_opts = &MergeOpts( $Conf{tests}{ $test_name}{default_opts} || {}, $r_opts);
 
+    # go deeper
+    &State::PushDeep( );
 
     # Run tests/subtest one by one with checking deps
     foreach my $id ( @sorted_ids)
@@ -210,6 +213,8 @@ sub RunTest
     # Check results
     &CheckResults( $test_name, $r_test_res);
 
+    &Print( &Utils::GetShortReport( $r_test_res));
+    &State::PopDeep( );
     return $r_test_res;
 }
 
