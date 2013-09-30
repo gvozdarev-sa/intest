@@ -1,6 +1,6 @@
 #vim
 .*.swp
-
+.*.swo
 #ctags
 tags
 # Compiled source #
