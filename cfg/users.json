@@ -1,7 +1,8 @@
 {
-    "gvozdarev.sa@gmail.com" :
+    "test@test.test" :
     {
-            "name" : "Sergey Gvozdarev",
-            "branch" : ""
+            "name" : "Name of student",
+            "branch" : "in repo",
+            "mentors" : [ "mentor1@t.t"," mentor2@t.t"]
     }
 }
