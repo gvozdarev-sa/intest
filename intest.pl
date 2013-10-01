@@ -54,13 +54,13 @@ sub main
     $Conf{color}   = 1 if ( $color);
 
     my $ver = &GetVersion;
-    &Print( "===============================");
+    &Print( "=" x 80);
     &Print( "Start intest.");
     &Print( "  version:");
     &Print( $ver);
-    &Print( "===============================");
+    &Print( "=" x 80);
     &InitConf( );
-
+    &Print( "=" x 80);
     #&Print( &DumpHash( \%Conf));
 
     my %Opts;

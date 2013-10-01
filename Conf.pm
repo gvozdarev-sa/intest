@@ -43,6 +43,7 @@ our %Conf =
     debug           => 0,
     verbose         => 0,
     color           => 1,
+    deep_log        => 1,
 );
 chomp( my $pwd = `pwd`);
 $Conf{root} = $pwd;

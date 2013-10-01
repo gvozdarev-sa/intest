@@ -104,9 +104,9 @@ sub GetStrCode
 {
     my $r_res = shift;
     ###
-    if ( $Errors::str_erros->{ $r_res->{code}})
+    if ( $Errors::str_errors->{ $r_res->{code}})
     {
-        return $Errors::str_erros->{ $r_res->{code}};
+        return $Errors::str_errors->{ $r_res->{code}};
     }
     else
     {
@@ -136,23 +136,23 @@ sub GetShortReport
     my $str = '';
     if ( &IsDone( $r_res))
     {
-        $str .= sprintf( "%-15s;", "Done");
+        $str .= sprintf( "%-8s:", "Done 1");
     }
     else
     {
-        $str .= sprintf( "%-15s;", "Is not done");
+        $str .= sprintf( "%-8s:", "Done 0");
     }
 
     if ( &IsPassed( $r_res))
     {
-        $str .= sprintf( "%-40s;", "passed");
+        $str .= sprintf( "%-25s:", "passed");
     }
     else
     {
-        $str .= sprintf( "%-40s;", "failed ( ".&GetStrCode( $r_res) . " )");
+        $str .= sprintf( "%-25s:", "failed ( ".&GetStrCode( $r_res) . " )");
     }
 
-    $str .= sprintf( "percentage: %02d;", &GetPercentage( $r_res));
+    $str .= sprintf( "percentage: %02d:", &GetPercentage( $r_res));
 #    $str .= "\n";
 
     return $str;
@@ -395,13 +395,14 @@ sub Print
     my $verbose = shift;
 
     my @msgs = split( "\n", $msg);
+
     if ( scalar @msgs > 1)
     {
         foreach my $sub_msg ( @msgs)
         {
             &Print( $sub_msg, $verbose);
-            return;
         }
+        return;
     }
 
     $verbose = 1 if ( ! defined $verbose || $Conf{verbose});
@@ -419,7 +420,14 @@ sub Print
     my $prefix = '';
     $prefix .= $timestamp;
     $prefix .= " $caller : " if ( $Conf{debug});
-    $prefix .= '----' x &State::GetDeep( );
+    if ( $Conf{deep_log})
+    {
+        $prefix .= '---|' x &State::GetDeep( );
+    }
+    else
+    {
+        $prefix .= &State::GetDeep( );
+    }
     $prefix .= '> ';
 
     $msg = $prefix . $msg . "\n";

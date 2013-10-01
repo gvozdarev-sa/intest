@@ -29,7 +29,7 @@ sub Run
     foreach my $user ( keys %$r_users)
     {
         #&SetTestLog( );
-        &SetSrc   ( "$r_conf->{root}/src/$r_users->{ $user}{branch}");
+        &SetSrc   ( "$r_conf->{root}/src/$r_users->{ $user}{path}");
         &SetUser  ( "$r_opts->{name}");
         &SetEmail ( $user);
 

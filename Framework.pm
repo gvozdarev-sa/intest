@@ -119,7 +119,7 @@ sub RunSubtest
         &Print( $r_res->{msg}, 0);
     }
 
-    &Print( &Utils::GetShortReport( $r_res));
+    &Print( sprintf( "subtest: %-30s: ", $subtest_name ) . &Utils::GetShortReport( $r_res));
 
     return $r_res;
 }
@@ -180,14 +180,16 @@ sub RunTest
     ###
     my @subtests = ();
 
+    # go deeper
+    &State::PushDeep( );
+    &Print( "=" x ( 80 - 4 * &State::GetDeep( )) . "\n*Run test $test_name\n" . "-" x ( 80 - 4 * &State::GetDeep( )));
+
     # Sort test by id
     my @sorted_ids = sort { $Conf{tests}{ $test_name}{include}{ $a} <=> $Conf{tests}{ $test_name}{include}{ $b}} keys %{ $Conf{tests}{ $test_name}{include}};
 
     # merge opts
     $r_opts = &MergeOpts( $Conf{tests}{ $test_name}{default_opts} || {}, $r_opts);
 
-    # go deeper
-    &State::PushDeep( );
 
     # Run tests/subtest one by one with checking deps
     foreach my $id ( @sorted_ids)
@@ -200,7 +202,6 @@ sub RunTest
             # cd to root
             &CdRoot( );
 
-            &Print( "Run id : $id, test_name : $test_name");
             $r_test_res->{items_res}{ $id} = &RunItemById( $id, $test_name, $Conf{tests}{ $test_name}{include}{ $id}{opts}, $r_test_res);
         }
         else
@@ -213,7 +214,8 @@ sub RunTest
     # Check results
     &CheckResults( $test_name, $r_test_res);
 
-    &Print( &Utils::GetShortReport( $r_test_res));
+    &Print( sprintf( "test   : %-30s: ", $test_name ) . &Utils::GetShortReport( $r_test_res));
+    &Print( "-" x ( 80 - 4 * &State::GetDeep( )) . "\n*Finish test $test_name\n" . "=" x ( 80 - 4 * &State::GetDeep( )));
     &State::PopDeep( );
     return $r_test_res;
 }
