@@ -21,6 +21,7 @@
 ############################################################################################
 
 use strict;
+use warnings;
 
 use FindBin;
 use lib "$FindBin::Bin";
@@ -37,21 +38,16 @@ sub main
 {
     my $test;
     my $opts;
-    my $debug;
-    my $verbose;
-    my $color;
 
     &GetOptions(
             "test|t=s"          => \$test,
             "options|opts|o=s"  => \$opts,
-            "debug|d"           => \$debug,
-            "verbose|v"         => \$verbose,
-            "color"             => \$color,
+            "debug|d"           => \$Conf{debug},
+            "verbose|v"         => \$Conf{verbose},
+            "color"             => \$Conf{color},
+            "html_log"          => \$Conf{html_log},
+            "deep_log"          => \$Conf{deep_log},
     ) || die ( "Invalid options!!!");
-
-    $Conf{debug}   = 1 if ( $debug);
-    $Conf{verbose} = 1 if ( $verbose);
-    $Conf{color}   = 1 if ( $color);
 
     my $ver = &GetVersion;
     &Print( "=" x 80);
@@ -75,9 +71,7 @@ sub main
     {
         &Print( "Failed");
     }
-    &Print( "  code       : " . $res->{code});
-    &Print( "  percentage : " . $res->{percentage});
-    &Print( "  msg        : " . $res->{msg});
+    &Print( &Utils::GetShortReport( $res));
     &Print( &DumpHash( $res), 0);
 
 }

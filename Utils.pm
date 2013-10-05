@@ -25,7 +25,8 @@ package Utils;
 require Exporter;
 @ISA    = qw( Exporter );
 @EXPORT = qw(
-Print
+Print PrintH PrintC  PrintLog PrintDebug PrintInfo PrintWarn PrintError PrintPassed
+IsDone IsPassed
 Execute
 DumpHash
 Assert
@@ -387,63 +388,464 @@ sub LoadJSON
 
     return $perl_hash;
 }
-
-
-sub Print
+# html msges
+sub DebugHtmlMsg($)
 {
-    my $msg     = shift;
-    my $verbose = shift;
+    return "<div class=\"msg debug_msg\"> $_[ 0] </div>";
+}
 
-    my @msgs = split( "\n", $msg);
+sub LogHtmlMsg($)
+{
+    return "<div class=\"msg log_msg\"> $_[ 0] </div>";
+}
 
-    if ( scalar @msgs > 1)
+sub InfoHtmlMsg($)
+{
+    return "<div class=\"msg info_msg\"> $_[ 0] </div>";
+}
+
+sub WarnHtmlMsg($)
+{
+    return "<div class=\"msg warn_msg\"> $_[ 0] </div>";
+}
+
+sub ErrorHtmlMsg($)
+{
+    return "<div class=\"msg error_msg\"> $_[ 0] </div>";
+}
+
+sub PassedHtmlMsg($)
+{
+    return "<div class=\"msg passed_msg\"> $_[ 0] </div>";
+}
+
+# console msges
+sub DebugConsMsg($)
+{
+    return "\x1b[2;37;44m" . $_[ 0] . "\x1b[0m";
+}
+sub LogConsMsg($)
+{
+    return "\x1b[2;37m" . $_[ 0] . "\x1b[0m";
+}
+sub InfoConsMsg($)
+{
+    return "\x1b[1;37m" . $_[ 0] . "\x1b[0m";
+}
+
+sub WarnConsMsg($)
+{
+    return "\x1b[1;33m" . $_[ 0] . "\x1b[0m";
+}
+sub ErrorConsMsg($)
+{
+    return "\x1b[1;31m" . $_[ 0] . "\x1b[0m";
+}
+sub PassedConsMsg($)
+{
+    return "\x1b[1;32m" . $_[ 0] . "\x1b[0m";
+}
+#
+sub DebugMsg($)
+{
+    if ( $Conf{html_log})
     {
-        foreach my $sub_msg ( @msgs)
-        {
-            &Print( $sub_msg, $verbose);
-        }
-        return;
-    }
-
-    $verbose = 1 if ( ! defined $verbose || $Conf{verbose});
-
-    ( my $sec, my $min,my $hour, my $mday, my $mon, my $year, my $wday, my $yday, my $isdst) = localtime( time);
-    my $timestamp;
-    $timestamp = sprintf( "[ %02d-%02d:%02d:%02d ] ", $mday, $hour, $min, $sec);
-    $timestamp = "\x1b[1;34m" . $timestamp . "\x1b[0m" if ( $Conf{color});
-
-    my $caller;
-    $caller = ( caller( 1))[ 3];
-    $caller = sprintf( "%-33s", $caller);
-    $caller =  "\x1b[1;36m" . $caller . "\x1b[0m" if ( $Conf{color});
-
-    my $prefix = '';
-    $prefix .= $timestamp;
-    $prefix .= " $caller : " if ( $Conf{debug});
-    if ( $Conf{deep_log})
-    {
-        $prefix .= '---|' x &State::GetDeep( );
+        return &DebugHtmlMsg( $_[ 0]);
     }
     else
     {
-        $prefix .= &State::GetDeep( );
+        return &DebugConsMsg( $_[ 0]);
     }
-    $prefix .= '> ';
+}
+sub LogMsg($)
+{
+    if ( $Conf{html_log})
+    {
+        return &LogHtmlMsg( $_[ 0]);
+    }
+    else
+    {
+        return &LogConsMsg( $_[ 0]);
+    }
 
-    $msg = $prefix . $msg . "\n";
+}
+sub InfoMsg($)
+{
+    if ( $Conf{html_log})
+    {
+        return &InfoHtmlMsg( $_[ 0]);
+    }
+    else
+    {
+        return &InfoConsMsg( $_[ 0]);
+    }
 
-    print( $msg) if $verbose;
+}
+sub WarnMsg($)
+{
+    if ( $Conf{html_log})
+    {
+        return &WarnHtmlMsg( $_[ 0]);
+    }
+    else
+    {
+        return &WarnConsMsg( $_[ 0]);
+    }
+}
+sub ErrorMsg($)
+{
+    if ( $Conf{html_log})
+    {
+        return &ErrorHtmlMsg( $_[ 0]);
+    }
+    else
+    {
+        return &ErrorConsMsg( $_[ 0]);
+    }
+}
+
+#====
+sub PrintDebug
+{
+    my $line = $_[ 0];
+    my $r_msges = &PrintParser( $line);
+
+    foreach my $r_msg ( @$r_msges)
+    {
+        if    ( $Conf{html_log})
+        {
+            my $r = {};
+            $r->{prefix}    = "<div class=\"msg_line\">";
+            $r->{suffix}    = "</div>";
+            $r->{timestamp} = &InfoHtmlMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugHtmlMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnHtmlMsg ( $r_msg->{deeper});
+            $r->{msg}       = &DebugHtmlMsg( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        elsif ( $Conf{color})
+        {
+            my $r = {};
+            $r->{timestamp} = &InfoConsMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugConsMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnConsMsg ( $r_msg->{deeper});
+            $r->{msg}       = &DebugConsMsg( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        else
+        {
+            &PrintHelper( $r_msg, $_[ 1]);
+        }
+        &PrintToFile( $r_msg);
+    }
+}
+sub PrintLog
+{
+    my $line = $_[ 0];
+    my $r_msges = &PrintParser( $line);
+
+    foreach my $r_msg ( @$r_msges)
+    {
+        if    ( $Conf{html_log})
+        {
+            my $r = {};
+            $r->{prefix}    = "<div class=\"msg_line\">";
+            $r->{suffix}    = "</div>";
+            $r->{timestamp} = &InfoHtmlMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugHtmlMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnHtmlMsg ( $r_msg->{deeper});
+            $r->{msg}       = &LogHtmlMsg  ( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        elsif ( $Conf{color})
+        {
+            my $r = {};
+            $r->{timestamp} = &InfoConsMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugConsMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnConsMsg ( $r_msg->{deeper});
+            $r->{msg}       = &LogConsMsg( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        else
+        {
+            &PrintHelper( $r_msg, $_[ 1]);
+        }
+        &PrintToFile( $r_msg);
+    }
+}
+
+sub PrintInfo
+{
+    my $line = $_[ 0];
+    my $r_msges = &PrintParser( $line);
+
+    foreach my $r_msg ( @$r_msges)
+    {
+        if    ( $Conf{html_log})
+        {
+            my $r = {};
+            $r->{prefix}    = "<div class=\"msg_line\">";
+            $r->{suffix}    = "</div>";
+            $r->{timestamp} = &InfoHtmlMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugHtmlMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnHtmlMsg ( $r_msg->{deeper});
+            $r->{msg}       = &InfoHtmlMsg ( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        elsif ( $Conf{color})
+        {
+            my $r = {};
+            $r->{timestamp} = &InfoConsMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugConsMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnConsMsg ( $r_msg->{deeper});
+            $r->{msg}       = &InfoConsMsg ( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        else
+        {
+            &PrintHelper( $r_msg, $_[ 1]);
+        }
+        &PrintToFile( $r_msg);
+    }
+}
+
+sub PrintWarn
+{
+    my $line = $_[ 0];
+    my $r_msges = &PrintParser( $line);
+
+    foreach my $r_msg ( @$r_msges)
+    {
+        if    ( $Conf{html_log})
+        {
+            my $r = {};
+            $r->{prefix}    = "<div class=\"msg_line\">";
+            $r->{suffix}    = "</div>";
+            $r->{timestamp} = &InfoHtmlMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugHtmlMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnHtmlMsg ( $r_msg->{deeper});
+            $r->{msg}       = &WarnHtmlMsg  ( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        elsif ( $Conf{color})
+        {
+            my $r = {};
+            $r->{timestamp} = &InfoConsMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugConsMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnConsMsg ( $r_msg->{deeper});
+            $r->{msg}       = &WarnConsMsg ( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        else
+        {
+            &PrintHelper( $r_msg, $_[ 1]);
+        }
+        &PrintToFile( $r_msg);
+    }
+}
+
+sub PrintError
+{
+    my $line = $_[ 0];
+    my $r_msges = &PrintParser( $line);
+
+    foreach my $r_msg ( @$r_msges)
+    {
+        if    ( $Conf{html_log})
+        {
+            my $r = {};
+            $r->{prefix}    = "<div class=\"msg_line\">";
+            $r->{suffix}    = "</div>";
+            $r->{timestamp} = &InfoHtmlMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugHtmlMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnHtmlMsg ( $r_msg->{deeper});
+            $r->{msg}       = &ErrorHtmlMsg( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        elsif ( $Conf{color})
+        {
+            my $r = {};
+            $r->{timestamp} = &InfoConsMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugConsMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnConsMsg ( $r_msg->{deeper});
+            $r->{msg}       = &ErrorConsMsg( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        else
+        {
+            &PrintHelper( $r_msg, $_[ 1]);
+        }
+        &PrintToFile( $r_msg);
+    }
+}
+
+sub PrintPassed
+{
+    my $line = $_[ 0];
+    my $r_msges = &PrintParser( $line);
+
+    foreach my $r_msg ( @$r_msges)
+    {
+        if    ( $Conf{html_log})
+        {
+            my $r = {};
+            $r->{prefix}    = "<div class=\"msg_line\">";
+            $r->{suffix}    = "</div>";
+            $r->{timestamp} = &InfoHtmlMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugHtmlMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnHtmlMsg ( $r_msg->{deeper});
+            $r->{msg}       = &PassedHtmlMsg( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        elsif ( $Conf{color})
+        {
+            my $r = {};
+            $r->{timestamp} = &InfoConsMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugConsMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnConsMsg ( $r_msg->{deeper});
+            $r->{msg}       = &PassedConsMsg( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        else
+        {
+            &PrintHelper( $r_msg, $_[ 1]);
+        }
+        &PrintToFile( $r_msg);
+    }
+}
+
+sub Print
+{
+    &PrintLog( @_);
+}
+
+sub PrintC
+{
+    my $line = $_[ 0];
+    my $r_msges = &PrintParser( $line);
+
+    foreach my $r_msg ( @$r_msges)
+    {
+        if ( $Conf{color})
+        {
+            my $r = {};
+            $r->{timestamp} = &InfoConsMsg ( $r_msg->{timestamp});
+            $r->{caller}    = &DebugConsMsg( $r_msg->{caller});
+            $r->{deeper}    = &WarnConsMsg ( $r_msg->{deeper});
+            $r->{msg}       = &LogConsMsg( $r_msg->{msg});
+            &PrintHelper( $r, $_[ 1]);
+        }
+        else
+        {
+            &PrintHelper( $r_msg, $_[ 1]);
+        }
+        &PrintToFile( $r_msg);
+    }
+
+}
+sub PrintH
+{
+    my $line = $_[ 0];
+    my $r_msges = &PrintParser( $line);
+
+    foreach my $r_msg ( @$r_msges)
+    {
+        my $r = {};
+        $r->{prefix}    = "<div class=\"msg_line\">";
+        $r->{suffix}    = "</div>";
+        $r->{timestamp} = &InfoHtmlMsg ( $r_msg->{timestamp});
+        $r->{caller}    = &DebugHtmlMsg( $r_msg->{caller});
+        $r->{deeper}    = &WarnHtmlMsg ( $r_msg->{deeper});
+        $r->{msg}       = &LogHtmlMsg( $r_msg->{msg});
+        &PrintHelper( $r, $_[ 1]);
+        &PrintToFile( $r_msg);
+    }
+}
+
+sub PrintToFile
+{
+    my $r_msg = shift;
+
+    my $line = '';
+    $line .= $r_msg->{timestamp};
+    $line .= " $r_msg->{caller}" if ( $Conf{debug});
+    $line .= " $r_msg->{deeper}";
+    $line .= " $r_msg->{msg}";
+    $line .= "\n";
 
     if ( $Conf{log} && open LOG, ">> $Conf{log}")
     {
-        print LOG $msg;
+        print LOG $line;
         close LOG;
     }
     if( $Conf{test_log} && open LOG, ">> $Conf{test_log}")
     {
-        print LOG $msg;
+        print LOG $line;
         close LOG;
     }
+
+}
+
+
+sub PrintHelper
+{
+    my $r       = shift;
+    my $verbose = shift;
+
+    $verbose = 1 if ( ! defined $verbose || $Conf{verbose});
+    my $line =  '';
+    $line .=   $r->{prefix} if ( $r->{prefix});
+    $line .=   $r->{timestamp};
+    $line .= " $r->{caller}" if ( $Conf{debug});
+    $line .= " $r->{deeper}";
+    $line .= " $r->{msg}";
+    $line .=   $r->{suffix} if ( $r->{suffix});
+    $line .= "\n";
+
+    print( $line) if $verbose;
+}
+
+sub PrintParser
+{
+    my $msg     = shift;
+    ###
+    my @msges = ( );
+    ###
+    #TODO split msges by length specified in config
+    my @lines = split( "\n", $msg);
+
+    foreach my $line ( @lines)
+    {
+        my $msg = {};
+        $msg->{msg} = $line;
+
+        # timestamp
+        ( my $sec, my $min,my $hour, my $mday, my $mon, my $year, my $wday, my $yday, my $isdst) = localtime( time);
+        my $timestamp;
+        $timestamp = sprintf( "[ %02d-%02d:%02d:%02d ]", $mday, $hour, $min, $sec);
+        $msg->{timestamp} = $timestamp;
+
+        # caller for debug
+        my $caller;
+        $caller = ( caller( 3))[ 3];
+        $caller = sprintf( "%-33s", $caller);
+        $msg->{caller} = $caller;
+
+        # deeper for preaty log
+        my $deeper = '';
+        if ( $Conf{deep_log})
+        {
+            $deeper .= '---|' x &State::GetDeep( );
+        }
+        else
+        {
+            $deeper .= &State::GetDeep( );
+        }
+        $deeper .= ">";
+        $msg->{deeper} = $deeper;
+        push @msges, $msg;
+    }
+    return \@msges;
 }
 
 sub DumpHash
