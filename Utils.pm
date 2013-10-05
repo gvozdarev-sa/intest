@@ -446,63 +446,6 @@ sub PassedConsMsg($)
     return "\x1b[1;32m" . $_[ 0] . "\x1b[0m";
 }
 #
-sub DebugMsg($)
-{
-    if ( $Conf{html_log})
-    {
-        return &DebugHtmlMsg( $_[ 0]);
-    }
-    else
-    {
-        return &DebugConsMsg( $_[ 0]);
-    }
-}
-sub LogMsg($)
-{
-    if ( $Conf{html_log})
-    {
-        return &LogHtmlMsg( $_[ 0]);
-    }
-    else
-    {
-        return &LogConsMsg( $_[ 0]);
-    }
-
-}
-sub InfoMsg($)
-{
-    if ( $Conf{html_log})
-    {
-        return &InfoHtmlMsg( $_[ 0]);
-    }
-    else
-    {
-        return &InfoConsMsg( $_[ 0]);
-    }
-
-}
-sub WarnMsg($)
-{
-    if ( $Conf{html_log})
-    {
-        return &WarnHtmlMsg( $_[ 0]);
-    }
-    else
-    {
-        return &WarnConsMsg( $_[ 0]);
-    }
-}
-sub ErrorMsg($)
-{
-    if ( $Conf{html_log})
-    {
-        return &ErrorHtmlMsg( $_[ 0]);
-    }
-    else
-    {
-        return &ErrorConsMsg( $_[ 0]);
-    }
-}
 
 #====
 sub PrintDebug
@@ -714,6 +657,7 @@ sub PrintPassed
     }
 }
 
+
 sub Print
 {
     &PrintLog( @_);
@@ -767,7 +711,7 @@ sub PrintToFile
     my $r_msg = shift;
 
     my $line = '';
-    $line .= $r_msg->{timestamp};
+    $line .=   $r_msg->{timestamp};
     $line .= " $r_msg->{caller}" if ( $Conf{debug});
     $line .= " $r_msg->{deeper}";
     $line .= " $r_msg->{msg}";
@@ -785,7 +729,6 @@ sub PrintToFile
     }
 
 }
-
 
 sub PrintHelper
 {
