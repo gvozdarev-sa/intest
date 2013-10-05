@@ -4,6 +4,7 @@
         "prepare_ws",
         "clean_ws",
         "svn",
+        "git",
         "compile",
         "run_compare",
         "foreach_user"

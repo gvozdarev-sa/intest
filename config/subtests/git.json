@@ -1,0 +1,11 @@
+{
+    "name"         : "git",
+    "driver"       : "git",
+    "default_opts" :
+    {
+        "repo"   : "https://github.com/gvozdarev-sa/intest.git",
+//        "pull"   : "src",
+        "branch" : "master",
+        "clone"  : "src"
+    }
+}
