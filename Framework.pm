@@ -119,8 +119,16 @@ sub RunSubtest
         &Print( $r_res->{msg}, 0);
     }
 
-    &Print( sprintf( "subtest: %-30s: ", $subtest_name ) . &Utils::GetShortReport( $r_res));
+    my $line = sprintf( "subtest: %-30s: ", $subtest_name ) . &Utils::GetShortReport( $r_res);
 
+    if ( &IsPassed( $r_res ))
+    {
+        &PrintPassed( $line);
+    }
+    else
+    {
+        &PrintError( $line);
+    }
     return $r_res;
 }
 
