@@ -1,9 +1,16 @@
 {
-    "test@test.test" :
+    "user1@intest.com" :
     {
-            "name"    : "Name of student",
+            "name"    : "foo",
             "branch"  : "master",
-            "path"    : "",
-            "mentors" : [ "mentor1@t.t"," mentor2@t.t"]
+            "path"    : "stuff/user1",
+            "mentors" : [ "ment1@intest.com", "ment2@intest.com" ]
+    },
+    "user2@intest.com" :
+    {
+            "name"    : "bar",
+            "branch"  : "master",
+            "path"    : "stuff/user2",
+            "mentors" : [ "ment1@intest.com" ]
     }
 }
