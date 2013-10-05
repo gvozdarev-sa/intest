@@ -32,8 +32,8 @@ use File::Basename;
 
 our %Conf =
 (
-    src             => "src",
-    ws              => "ws",
+    global_src      => "src",
+    global_ws       => "ws",
     config          => "config/subtests/",
     tests_file      => "config/tests.json",
     subtests_file   => "config/subtests.json",
@@ -45,53 +45,15 @@ our %Conf =
     color           => 0,
     deep_log        => 0,
     html_log        => 0,
+    #daemon
+    daemon_host         => '127.0.0.1',
+    daemon_port         => 8080,
+    daemon_forks        => 3,
+    daemon_req_per_fork => 10,
 );
+
+
 chomp( my $pwd = `pwd`);
 $Conf{root} = $pwd;
-
-our %State =
-(
-
-);
-#####
-sub SetSrc
-{
-    my $src = shift;
-    ###
-    $Conf{src}  = $src; #FIXME
-    $State{src} = $src;
-}
-
-sub GetSrc
-{
-    return $State{src};
-}
-#####
-sub SetUser
-{
-    my $user = shift;
-    ###
-    $Conf{user}  = $user; #FIXME
-    $State{user} = $user;
-}
-
-sub GetUser
-{
-    return $State{user};
-}
-####
-sub SetEmail
-{
-    my $email = shift;
-    ###
-    $Conf{email}  = $email; #FIXME
-    $State{email} = $email;
-}
-
-sub GetEmail
-{
-    return $State{email};
-}
-
 
 1;

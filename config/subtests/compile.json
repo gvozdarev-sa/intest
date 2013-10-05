@@ -3,7 +3,7 @@
     "driver"        :   "compile",
     "default_opts"  :
     {
-        "src"       : "a.c",
+        "src_file"  : "main.c",
         "bin"       : "bin/a.out",
         "compiler"  : "gcc",
         "FLAGS"     : " -d -O2",

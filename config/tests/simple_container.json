@@ -66,11 +66,11 @@
             "type" : "subtest",
             "opts" :
             {
-                "FLAGS" : "2",
+                "FLAGS" : "2 3",
                 "stdout" :
                 {
-                    "type" : "int_eq",
-                    "must" : "3"
+                    "type" : "regex",
+                    "must" : "2\\s*3"
                 }
             }
         }

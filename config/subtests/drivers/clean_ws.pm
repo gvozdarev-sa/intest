@@ -10,27 +10,46 @@ BEGIN
 
 use Utils;
 use Errors;
+use State;
 
 sub Run
 {
     my $r_opts = shift;
     my $r_conf = shift;
 
+    my $ws = &GetWs( );
+
+    if ( $r_opts->{rm_dir})
+    {
+        my $res = &Execute( "rm -rf \"$ws\"");
+        if ( $res->{code})
+        {
+            return $FAIL;
+        }
+        else
+        {
+            return $PASS;
+        }
+    }
+
+
+
     my $r_items_to_rm = ( $r_opts->{clean_all}) ? (  "*" ) : ( $r_opts->{dirs_to_rm});
 
     if ( $r_items_to_rm)
     {
-        my @dirs = map{ $_ = "$r_conf->{ws}/$_" ; } split( ",", $r_items_to_rm);
+        my @dirs = map{ $_ = "$ws/$_" ; } split( ",", $r_items_to_rm);
 
         foreach my $dir ( @dirs)
         {
-            my $res = &Execute( "rm -rf $dir");
+            my $res = &Execute( "rm -rf \"$dir\"");
             if ( $res->{code})
             {
                 return $FAIL;
             }
         }
     }
+
     return $PASS;
 }
 

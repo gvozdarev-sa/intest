@@ -30,18 +30,18 @@ use lib "$FindBin::Bin/config/subtests/drivers";
 use Getopt::Long qw ( GetOptions);
 
 use Errors;
-use Utils qw( Print  Execute LoadJSON DumpHash);
+use Utils;
 use Framework qw( GetVersion InitConf);
 use Conf;
 
 sub main
 {
     my $test;
-    my $opts;
+    my $test_opts = '';
 
     &GetOptions(
             "test|t=s"          => \$test,
-            "options|opts|o=s"  => \$opts,
+            "test_options|opts|o=s"  => \$test_opts,
             "debug|d"           => \$Conf{debug},
             "verbose|v"         => \$Conf{verbose},
             "color"             => \$Conf{color},
@@ -59,8 +59,8 @@ sub main
     &Print( "=" x 80);
     #&Print( &DumpHash( \%Conf));
 
-    my %Opts;
-    my $res = &Framework::RunTest( $test, \%Opts);
+    my $Opts = &ParseOptsString( $test_opts);
+    my $res = &Framework::RunTest( $test, $Opts);
 
     &Print( "Result:");
     if ( $res->{code} == $PASS)
@@ -73,7 +73,6 @@ sub main
     }
     &Print( &Utils::GetShortReport( $res));
     &Print( &DumpHash( $res), 0);
-
 }
 
 

@@ -26,6 +26,7 @@ require Exporter;
 @ISA    = qw( Exporter );
 @EXPORT = qw(
 SetSrc      GetSrc
+SetWs       GetWs
 SetUser     GetUser
 SetEmail    GetEmail
 
@@ -34,7 +35,7 @@ SetEmail    GetEmail
 ###################################
 use strict;
 use File::Basename;
-use Conf; #FIXME
+use Conf;
 
 our %State =
 (
@@ -45,7 +46,6 @@ sub SetSrc
 {
     my $src = shift;
     ###
-    $Conf{src}  = $src; #FIXME
     $State{src} = $src;
 }
 
@@ -53,12 +53,23 @@ sub GetSrc
 {
     return $State{src};
 }
+####
+sub SetWs
+{
+    my $src = shift;
+    ###
+    $State{ws} = $src;
+}
+
+sub GetWs
+{
+    return $State{ws};
+}
 #####
 sub SetUser
 {
     my $user = shift;
     ###
-    $Conf{user}  = $user; #FIXME
     $State{user} = $user;
 }
 
@@ -71,7 +82,6 @@ sub SetEmail
 {
     my $email = shift;
     ###
-    $Conf{email}  = $email; #FIXME
     $State{email} = $email;
 }
 

@@ -33,7 +33,7 @@ Assert
 
 LoadJSON
 
-MergeOpts
+MergeOpts ParseOptsString
 
 CheckHelper
 CheckByType
@@ -175,7 +175,7 @@ sub Execute
 
     if ( $res{code} != $PASS)
     {
-        &Print( "  return code $res{code}\n    with stdout:\n$res{stdout}\n    with stderr:\n$res{stderr}", 1);
+#        &Print( "  return code $res{code}\n    with stdout:\n$res{stdout}\n    with stderr:\n$res{stderr}", 1);
     }
 
     return \%res;
@@ -373,6 +373,26 @@ sub MergeOpts
     return $r;
 }
 
+sub ParseOptsString($)
+{
+    my $str = shift;
+    #
+    my %Opts = ();
+    #
+    my @opt_arr = split( ';', $str);
+    foreach my $opt ( @opt_arr)
+    {
+        if     ( $opt =~ /^(\w*):(.*)$/ )
+        {
+            $Opts{ $1} = $2;
+        }
+        else
+        {
+            $Opts{ $opt} = 1;
+        }
+    }
+    return \%Opts;
+}
 
 sub LoadJSON
 {
@@ -384,7 +404,6 @@ sub LoadJSON
 
     &Print( "LoadJSON file - $json_file", 0);
     my $perl_hash = &decode_json( join( "", @json));
-
 
     return $perl_hash;
 }
@@ -778,13 +797,13 @@ sub PrintParser
         my $deeper = '';
         if ( $Conf{deep_log})
         {
-            $deeper .= '---|' x &State::GetDeep( );
+            $deeper .= '|---' x &State::GetDeep( );
         }
         else
         {
             $deeper .= &State::GetDeep( );
         }
-        $deeper .= ">";
+        $deeper .= "|>";
         $msg->{deeper} = $deeper;
         push @msges, $msg;
     }

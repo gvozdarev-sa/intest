@@ -39,9 +39,10 @@ use lib "$FindBin::Bin";
 
 use Utils;
 use Conf;
+use State;
 use Errors;
 
-
+###
 sub CdRoot
 {
     &Print( "cd to root dir $Conf{root}", 0);
@@ -49,8 +50,9 @@ sub CdRoot
 }
 sub CdWs
 {
-    &Print( "cd to ws dir $Conf{root}/$Conf{ws}", 0);
-    chdir "$Conf{root}/$Conf{ws}";
+    my $ws = &GetWs( );
+    &Utils::Print( "cd to ws dir $ws", 0);
+    chdir "$ws";
 }
 
 sub RunSubtest
@@ -181,8 +183,8 @@ sub RunItemById
 
 sub RunTest
 {
-    my $test_name = shift;
-    my $r_opts    = shift;
+    my $test_name      = shift;
+    my $r_test_opts    = shift;
     ###
     my $r_test_res = &BlankRes( );
     ###
@@ -195,9 +197,8 @@ sub RunTest
     # Sort test by id
     my @sorted_ids = sort { $Conf{tests}{ $test_name}{include}{ $a} <=> $Conf{tests}{ $test_name}{include}{ $b}} keys %{ $Conf{tests}{ $test_name}{include}};
 
-    # merge opts
-    $r_opts = &MergeOpts( $Conf{tests}{ $test_name}{default_opts} || {}, $r_opts);
-
+    # global opts = default_opts in JSON + opts from command line
+    $r_test_opts = &MergeOpts( $Conf{tests}{ $test_name}{default_opts} || {}, $r_test_opts);
 
     # Run tests/subtest one by one with checking deps
     foreach my $id ( @sorted_ids)
@@ -210,7 +211,9 @@ sub RunTest
             # cd to root
             &CdRoot( );
 
-            $r_test_res->{items_res}{ $id} = &RunItemById( $id, $test_name, $Conf{tests}{ $test_name}{include}{ $id}{opts}, $r_test_res);
+            # test for special id  = options in json + global opts
+            my $r_id_opts = &MergeOpts(  $Conf{tests}{ $test_name}{include}{ $id}{opts}, $r_test_opts);
+            $r_test_res->{items_res}{ $id} = &RunItemById( $id, $test_name, $r_id_opts, $r_test_res);
         }
         else
         {

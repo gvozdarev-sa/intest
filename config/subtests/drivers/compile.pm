@@ -43,10 +43,9 @@ sub Run
     my $r_res = &BlankRes;
     ###
     &CdWs( );
-    my $cmd = "$r_opts->{compiler} $r_opts->{FLAGS}  $r_opts->{src} -o $r_opts->{bin} $r_opts->{libs}";
+    my $cmd = "$r_opts->{compiler} $r_opts->{FLAGS} '$r_opts->{src_file}' -o $r_opts->{bin} $r_opts->{libs}";
 
     my $comp_res = &Execute( $cmd);
-
 
     if ( $comp_res->{code} != $PASS)
     {

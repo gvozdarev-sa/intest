@@ -39,7 +39,7 @@
             {
                 "clean_all"  : 1,
                 "dirs_to_mk" : "bin",
-                "src_to_cp"  : "a.c"
+                "src_to_cp"  : "main.c"
             }
         },
         "3" :
@@ -85,7 +85,8 @@
             },
             "opts"      :
             {
-                "clean_all" : 0
+                "clean_all" : 1,
+                "rm_dir"    : 1
             }
         }
     }

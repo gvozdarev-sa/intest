@@ -3,7 +3,7 @@
     "driver"        :   "foreach_user",
     "default_opts"  :
     {
-        "test"  : "verysimple",
-        "users" : "cfg/users.json"
+        "test"       : "simple",
+        "users_file" : "cfg/users.json"
     }
 }

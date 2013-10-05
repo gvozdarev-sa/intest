@@ -27,12 +27,8 @@
     {
         "0" :
         {
-            "name" : "svn",
-            "type" : "subtest",
-            "opts" :
-            {
-                "update" : "ws"
-            }
+            "name" : "git",
+            "type" : "subtest"
         },
         "5" :
         {
@@ -40,8 +36,8 @@
             "type" : "subtest",
             "opts" :
             {
-                "test"  : "simple",
-                "users" : "cfg/users.json"
+                "test"       : "simple",
+                "users_file" : "cfg/users.json"
             },
             "depend_on" :
             {
