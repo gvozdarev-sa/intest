@@ -22,7 +22,7 @@ sub Run
     {
         my $res;
 
-        $res = &Execute( "rm -rf \"$src_dir\"&& mkdir -p \"$src_dir\" && git clone \"$r_opts->{repo}\"  \"$src_dir\"");
+        $res = &Execute( "rm -rf \"$src_dir\" && mkdir -p \"$src_dir\" && git clone \"$r_opts->{repo}\"  \"$src_dir\"");
         return $FAIL if ( $res->{code});
     }
 

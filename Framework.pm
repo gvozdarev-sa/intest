@@ -380,7 +380,9 @@ sub LoadTests($$)
     foreach my $test_name ( @{ $r_tests_list->{tests}})
     {
         &Print( "  loading $test_name");
-        $tests->{ $test_name} = &LoadTest( $test_name, $cfg_dir);
+        my $test = &LoadTest( $test_name, $cfg_dir);
+
+        $tests->{ $test->{name}} = $test;
     }
 
     return $tests;
