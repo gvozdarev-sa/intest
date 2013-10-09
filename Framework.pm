@@ -364,8 +364,6 @@ sub LoadSubtest($$)
     my $subtest = &LoadJSON( "$cfg_dir/subtests/$subtest_name.json");
     $subtest->{driver} = "$cfg_dir/subtests/drivers/$subtest->{driver}";
 
-    print $subtest->{driver};
-
     return $subtest;
 }
 
