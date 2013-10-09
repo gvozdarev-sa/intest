@@ -4,7 +4,9 @@
     "default_opts"  :
     {
         "bin"   :   "./bin/a.out",
-        "FLAGS" : "",
+        "STDIN" : "",
+    //  "STDIN_FILE" : "file in ws",
+        "ARGV"  : "",
         "code"  :
         {
             "type" : "int_eq",

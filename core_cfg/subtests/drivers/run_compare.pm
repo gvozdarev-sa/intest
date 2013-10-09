@@ -22,7 +22,20 @@ sub Run
     ###
     &CdWs( );
 
-    my $cmd = "$r_opts->{bin} $r_opts->{FLAGS}";
+    my $stdin_cmd;
+    if ( $r_opts->{STDIN})
+    {
+        $stdin_cmd = "echo \'$r_opts->{STDIN}\'| ";
+    }
+    elsif( $r_opts->{STDIN_FILE})
+    {
+        $stdin_cmd = "cat \'$r_opts->{STDIN_FILE}\' | ";
+    }
+    else
+    {
+        $stdin_cmd = "";
+    }
+    my $cmd = $stdin_cmd . "$r_opts->{bin} $r_opts->{ARGV}";
 
     my $run_res = &Execute( $cmd);
 
