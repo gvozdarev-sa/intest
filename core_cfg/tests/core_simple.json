@@ -1,5 +1,5 @@
 {
-    "name"              :   "simple",
+    "name"              :   "core_simple",
     "percentage" :
     {
         "type" : "copy",
@@ -33,7 +33,7 @@
     {
         "0" :
         {
-            "name"      : "prepare_ws",
+            "name"      : "core_prepare_ws",
             "type"      : "subtest",
             "opts"      :
             {
@@ -44,7 +44,7 @@
         },
         "3" :
         {
-            "name"  : "compile",
+            "name"  : "core_compile",
             "type"  : "subtest",
             "depend_on" :
             {
@@ -58,7 +58,7 @@
         },
         "5" :
         {
-            "name" : "simple_container",
+            "name" : "core_simple_container",
             "type" : "test",
             "depend_on" :
             {
@@ -72,7 +72,7 @@
         },
         "10" :
         {
-            "name"      : "clean_ws",
+            "name"      : "core_clean_ws",
             "type"      : "subtest",
             "depend_on" :
             {

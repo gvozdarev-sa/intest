@@ -175,7 +175,7 @@ sub Execute
 
     if ( $res{code} != $PASS)
     {
-#        &Print( "  return code $res{code}\n    with stdout:\n$res{stdout}\n    with stderr:\n$res{stderr}", 1);
+        &PrintWarn( "  return code $res{code}\n    with stdout:\n$res{stdout}\n    with stderr:\n$res{stderr}", 0);
     }
 
     return \%res;

@@ -1,9 +1,0 @@
-{
-    "tests" :
-    [
-        "verysimple",
-        "simple",
-        "simple_container",
-        "main_container"
-    ]
-}

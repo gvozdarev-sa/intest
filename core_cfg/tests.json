@@ -1,0 +1,8 @@
+{
+    "tests" :
+    [
+        "core_simple",
+        "core_simple_container",
+        "core_main_container"
+    ]
+}

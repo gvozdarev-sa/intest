@@ -25,7 +25,6 @@ use warnings;
 
 use FindBin;
 use lib "$FindBin::Bin";
-use lib "$FindBin::Bin/config/subtests/drivers";
 
 use Getopt::Long qw ( GetOptions);
 

@@ -1,0 +1,12 @@
+{
+    "subtests":
+    [
+        "core_prepare_ws",
+        "core_clean_ws",
+        "core_svn",
+        "core_git",
+        "core_compile",
+        "core_run_compare",
+        "core_foreach_user"
+    ]
+}

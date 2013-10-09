@@ -1,5 +1,5 @@
 {
-    "name"         :   "prepare_ws",
+    "name"         :   "core_prepare_ws",
     "driver"       :   "prepare_ws",
     "default_opts" :
     {

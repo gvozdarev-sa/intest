@@ -1,5 +1,5 @@
 {
-    "name"              :   "simple_container",
+    "name"              :   "core_simple_container",
     "percentage" :
     {
         "type" : "passed_total",
@@ -33,7 +33,7 @@
     {
         "0" :
         {
-            "name" : "run_compare",
+            "name" : "core_run_compare",
             "type" : "subtest",
             "opts" :
             {
@@ -47,7 +47,7 @@
         },
         "1" :
         {
-            "name" : "run_compare",
+            "name" : "core_run_compare",
             "type" : "subtest",
             "opts" :
             {
@@ -62,7 +62,7 @@
         },
         "2" :
         {
-            "name" : "run_compare",
+            "name" : "core_run_compare",
             "type" : "subtest",
             "opts" :
             {

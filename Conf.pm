@@ -32,22 +32,28 @@ use File::Basename;
 
 our %Conf =
 (
-    global_src      => "src",
-    global_ws       => "ws",
-    config          => "config/subtests/",
-    tests_file      => "config/tests.json",
-    subtests_file   => "config/subtests.json",
-    version         => "pre pre alpha",
+    global_src          => "src",
+    global_ws           => "ws",
+
+    core_cfg            => "core_cfg",
+    core_tests_file     => "tests.json",
+    core_subtests_file  => "subtests.json",
+
+    user_cfg            => "user_cfg",
+    user_tests_file     => "tests.json",
+    user_subtests_file  => "subtests.json",
+
+    version             => "pre alpha",
     #logging
-    log             => "prime.log",
-    debug           => 0,
-    verbose         => 0,
-    color           => 0,
-    deep_log        => 0,
-    html_log        => 0,
+    log                 => "prime.log",
+    debug               => 0,
+    verbose             => 0,
+    color               => 0,
+    deep_log            => 0,
+    html_log            => 0,
     #daemon
-    daemon_host         => '127.0.0.1',
-    daemon_port         => 8080,
+    daemon_host         => 'localhost',
+    daemon_port         => 80,
     daemon_forks        => 3,
     daemon_req_per_fork => 10,
 );

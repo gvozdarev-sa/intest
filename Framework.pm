@@ -37,6 +37,8 @@ use strict;
 use FindBin;
 use lib "$FindBin::Bin";
 
+use File::Basename;
+
 use Utils;
 use Conf;
 use State;
@@ -71,10 +73,12 @@ sub RunSubtest
         return $r_res;
     }
 
+    my $driver_basename = basename( $Conf{subtests}{ $subtest_name}{driver});
+    my $driver_fullname = $Conf{subtests}{ $subtest_name}{driver};
     local $@;
     eval
     {
-        require "$Conf{subtests}{ $subtest_name}{driver}.pm";
+        require "$driver_fullname.pm";
     };
     if ( $@)
     {
@@ -89,7 +93,7 @@ sub RunSubtest
     $r_opts = &MergeOpts( $Conf{subtests}{ $subtest_name}{default_opts} || {}, $r_opts);
 
     my $subtest_res;
-    my $run = '$subtest_res = ' . $Conf{subtests}{ $subtest_name}{driver} . '::Run( $r_opts, \\%Conf);';
+    my $run = '$subtest_res = ' . $driver_basename . '::Run( $r_opts, \\%Conf);';
     &Print( $run, 0);
 
     local $@;
@@ -328,27 +332,48 @@ sub CheckDeps
 
 sub InitConf
 {
-    $Conf{tests}      = &LoadTests   ( $Conf{tests_file});
-    $Conf{subtests}   = &LoadSubtests( $Conf{subtests_file});
+    $Conf{tests}      = &LoadTests   ( "$Conf{core_cfg}/$Conf{core_tests_file}",    $Conf{core_cfg});
+    $Conf{subtests}   = &LoadSubtests( "$Conf{core_cfg}/$Conf{core_subtests_file}", $Conf{core_cfg});
+
+    my $user_tests    = "$Conf{user_cfg}/$Conf{user_tests_file}";
+    my $user_subtests = "$Conf{user_cfg}/$Conf{user_subtests_file}";
+    if ( -f $user_tests)
+    {
+        $Conf{tests}    = &MergeOpts( &LoadTests   ( $user_tests   , $Conf{user_cfg}), $Conf{tests});
+    }
+    if ( -f $user_subtests)
+    {
+        $Conf{subtests} = &MergeOpts( &LoadSubtests( $user_subtests, $Conf{user_cfg}), $Conf{subtests});
+    }
 }
 
-sub LoadTest
+sub LoadTest($$)
 {
     my $test_name = shift;
+    my $cfg_dir   = shift;
+    ###
 
-    return &LoadJSON( "config/tests/$test_name.json"); # FIXME
+    return &LoadJSON( "$cfg_dir/tests/$test_name.json");
 }
 
-sub LoadSubtest
+sub LoadSubtest($$)
 {
     my $subtest_name = shift;
+    my $cfg_dir      = shift;
+    ###
+    my $subtest = &LoadJSON( "$cfg_dir/subtests/$subtest_name.json");
+    $subtest->{driver} = "$cfg_dir/subtests/drivers/$subtest->{driver}";
 
-    return &LoadJSON( "config/subtests/$subtest_name.json"); # FIXME
+    print $subtest->{driver};
+
+    return $subtest;
 }
 
-sub LoadTests
+sub LoadTests($$)
 {
     my $tests_file = shift;
+    my $cfg_dir    = shift;
+    ###
 
     &Print( "Load tests: $tests_file", 1);
     my $r_tests_list = &LoadJSON( $tests_file);
@@ -357,15 +382,17 @@ sub LoadTests
     foreach my $test_name ( @{ $r_tests_list->{tests}})
     {
         &Print( "  loading $test_name");
-        $tests->{ $test_name} = &LoadTest( $test_name);
+        $tests->{ $test_name} = &LoadTest( $test_name, $cfg_dir);
     }
 
     return $tests;
 }
 
-sub LoadSubtests
+sub LoadSubtests($$)
 {
     my $subtests_file = shift;
+    my $cfg_dir       = shift;
+    ###
 
     &Print( "Load subtests: $subtests_file", 1);
     my $r_subtests_list = &LoadJSON( $subtests_file);
@@ -374,7 +401,7 @@ sub LoadSubtests
     foreach my $subtest_name ( @{ $r_subtests_list->{subtests}})
     {
         &Print( "  loading $subtest_name");
-        $sub_tests->{ $subtest_name} = &LoadSubtest( $subtest_name);
+        $sub_tests->{ $subtest_name} = &LoadSubtest( $subtest_name, $cfg_dir);
     }
 
     return $sub_tests;

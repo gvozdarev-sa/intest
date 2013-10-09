@@ -1,5 +1,5 @@
 {
-    "name"          :   "clean_ws",
+    "name"          :   "core_clean_ws",
     "driver"        :   "clean_ws",
     "default_opts"  :
     {

@@ -1,5 +1,5 @@
 {
-    "name"       :   "main_container",
+    "name"       :   "core_main_container",
     "percentage" :
     {
         "type" : "copy",
@@ -27,16 +27,16 @@
     {
         "0" :
         {
-            "name" : "git",
+            "name" : "core_git",
             "type" : "subtest"
         },
         "5" :
         {
-            "name" : "foreach_user",
+            "name" : "core_foreach_user",
             "type" : "subtest",
             "opts" :
             {
-                "test"       : "simple",
+                "test"       : "core_simple",
                 "users_file" : "cfg/users.json"
             },
             "depend_on" :

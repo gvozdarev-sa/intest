@@ -1,5 +1,5 @@
 {
-    "name"          :   "compile",
+    "name"          :   "core_compile",
     "driver"        :   "compile",
     "default_opts"  :
     {

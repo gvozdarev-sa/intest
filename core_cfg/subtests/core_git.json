@@ -1,5 +1,5 @@
 {
-    "name"         : "git",
+    "name"         : "core_git",
     "driver"       : "git",
     "default_opts" :
     {

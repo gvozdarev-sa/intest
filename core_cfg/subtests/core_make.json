@@ -1,5 +1,5 @@
 {
-    "name"          :   "make",
+    "name"          :   "core_make",
     "driver"        :   "make",
     "default_opts"  :
     {

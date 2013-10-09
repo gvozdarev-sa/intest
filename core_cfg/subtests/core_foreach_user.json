@@ -1,5 +1,5 @@
 {
-    "name"          :   "foreach_user",
+    "name"          :   "core_foreach_user",
     "driver"        :   "foreach_user",
     "default_opts"  :
     {

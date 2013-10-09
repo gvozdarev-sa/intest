@@ -1,5 +1,5 @@
 {
-    "name"          :   "svn",
+    "name"          :   "core_svn",
     "driver"        :   "svn",
     "default_opts"  :
     {
