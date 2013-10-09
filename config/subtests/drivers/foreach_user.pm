@@ -43,8 +43,6 @@ sub Run
     {
         my @mentors_filter = split( ",", $r_opts->{only_for_mentors});
 
-        Print ( "Yra" . join( "mentor\n", @mentors_filter));
-
         my $PASS_FILTER = 1;
         foreach my $user ( @users_for_testing)
         {
@@ -66,7 +64,7 @@ sub Run
     {
         &PrintWarn( "Run test for user : $user");
 
-        my $r_mkws = &Execute( "mktemp -d $r_conf->{global_ws}/$user.$r_opts->{test}.XXXX");
+        my $r_mkws = &Execute( "mkdir -p \"$r_conf->{global_ws}\" && mktemp -d $r_conf->{global_ws}/$user.$r_opts->{test}.XXXX");
         #TODO check code
         chomp $r_mkws->{stdout};
         &SetWs    ( $r_mkws->{stdout});

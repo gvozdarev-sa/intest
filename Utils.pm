@@ -379,7 +379,7 @@ sub ParseOptsString($)
     #
     my %Opts = ();
     #
-    my @opt_arr = split( ';', $str);
+    my @opt_arr = split( '--', $str);
     foreach my $opt ( @opt_arr)
     {
         if     ( $opt =~ /^(\w*):(.*)$/ )
@@ -391,6 +391,7 @@ sub ParseOptsString($)
             $Opts{ $opt} = 1;
         }
     }
+    &PrintDebug( "Parsed test_options: " . &DumpHash( \%Opts));
     return \%Opts;
 }
 
