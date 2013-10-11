@@ -31,7 +31,7 @@
             "type" : "subtest",
             "opts" :
             {
-                "repo" : "https://code.google.com/p/mipt-ilab-course/"
+                "repo" : "https://github.com/gvozdarev-sa/intest.git"
             }
         },
         "5" :
@@ -41,7 +41,7 @@
             "opts" :
             {
                 "test"       : "task0",
-                "users_file" : "src/students/users.json"
+                "users_file" : "stuff/users.json"
             },
             "depend_on" :
             {
