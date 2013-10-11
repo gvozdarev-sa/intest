@@ -1,5 +1,5 @@
 {
-    "name"              :   "core_simple_container",
+    "name"              :   "task0_container",
     "percentage" :
     {
         "type" : "passed_total",
@@ -37,8 +37,9 @@
             "type" : "subtest",
             "opts" :
             {
-                "ARGV" : "OK",
-                "stdout" :
+                "STDIN"      : "OK",
+                "ARGV"      : "OK",
+                "stdout"     :
                 {
                     "type" : "regex",
                     "must" : "OK"

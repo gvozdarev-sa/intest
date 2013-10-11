@@ -1,5 +1,5 @@
 {
-    "name"       :   "core_main_container",
+    "name"       :   "main_container",
     "percentage" :
     {
         "type" : "copy",
@@ -28,7 +28,11 @@
         "0" :
         {
             "name" : "core_git",
-            "type" : "subtest"
+            "type" : "subtest",
+            "opts" :
+            {
+                "repo" : "https://code.google.com/p/mipt-ilab-course/"
+            }
         },
         "5" :
         {
@@ -36,8 +40,8 @@
             "type" : "subtest",
             "opts" :
             {
-                "test"       : "core_simple",
-                "users_file" : "cfg/users.json"
+                "test"       : "task0",
+                "users_file" : "src/students/users.json"
             },
             "depend_on" :
             {

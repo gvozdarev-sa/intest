@@ -1,4 +1,55 @@
 {
-    "name"              :   "simple",
-    "type"              :   "bin"
+    "name"       :   "core_verysimple",
+    "percentage" :
+    {
+        "type" : "copy",
+        "ids"  : [ 0]
+    },
+    "pass_if" :
+    {
+        "done" :
+        {
+            "type" : "bool",
+            "must" : 1,
+            "ids"  : [ 0,1]
+        },
+        "code" :
+        {
+            "type" : "code",
+            "must" : "$PASS",
+            "ids"  : [ 0,1]
+        }
+    },
+    "done_if" :
+    {
+        "done" :
+        {
+            "type" : "bool",
+            "must" : 1,
+            "ids"  : [ 0,1]
+        }
+    },
+    "include" :
+    {
+        "0" :
+        {
+            "name"      : "core_prepare_ws",
+            "type"      : "subtest",
+            "opts"      :
+            {
+                "clean_all"  : 1,
+                "dirs_to_mk" : "bin"
+            }
+        },
+        "1" :
+        {
+            "name"      : "core_clean_ws",
+            "type"      : "subtest",
+            "opts"      :
+            {
+                "clean_all"  : 1
+            }
+        }
+
+    }
 }

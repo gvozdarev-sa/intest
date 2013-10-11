@@ -64,11 +64,11 @@ sub main
     &Print( "Result:");
     if ( $res->{code} == $PASS)
     {
-        &Print( "PASSED");
+        &PrintPassed( "PASSED");
     }
     else
     {
-        &Print( "Failed");
+        &PrintError( "Failed");
     }
     &Print( &Utils::GetShortReport( $res));
     &Print( &DumpHash( $res), 0);

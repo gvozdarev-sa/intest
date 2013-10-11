@@ -1,5 +1,5 @@
 {
-    "name"              :   "core_simple",
+    "name"              :   "task0",
     "percentage" :
     {
         "type" : "copy",
@@ -58,7 +58,7 @@
         },
         "5" :
         {
-            "name" : "core_simple_container",
+            "name" : "task0_container",
             "type" : "test",
             "depend_on" :
             {

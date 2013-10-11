@@ -28,7 +28,7 @@ require Exporter;
 Print PrintH PrintC  PrintLog PrintDebug PrintInfo PrintWarn PrintError PrintPassed
 IsDone IsPassed
 Execute
-DumpHash
+DumpHash DumpJSON
 Assert
 
 LoadJSON
@@ -813,10 +813,35 @@ sub PrintParser
 
 sub DumpHash
 {
-    my $r = shift;
-
+    my $r    = shift;
+    my $file = shift;
+    ###
     local $Data::Dumper::Terse = 1;
-    return &Dumper( $r);
+    my $dump =  &Dumper( $r);
+    if ( $file)
+    {
+        open FH, "> $file";
+        print FH $dump;
+        close FH;
+    }
+    return $dump;
+}
+
+sub DumpJSON
+{
+    my $r    = shift;
+    my $file = shift;
+    ###
+    my $json = JSON->new( );
+    $json->pretty( 1);
+    my $dump = $json->encode( $r);
+    if ( $file)
+    {
+        open FH, "> $file";
+        print FH $dump;
+        close FH;
+    }
+    return $dump;
 }
 
 1;

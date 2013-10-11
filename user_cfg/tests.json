@@ -1,0 +1,8 @@
+{
+   "tests" : [
+      "task0/task0",
+      "task0/task0_container",
+
+      "main_container"
+   ]
+}
