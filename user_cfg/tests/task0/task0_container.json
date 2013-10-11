@@ -38,8 +38,8 @@
             "opts" :
             {
                 "STDIN"      : "OK",
-                "ARGV"      : "OK",
-                "stdout"     :
+                "ARGV"       : "OK",
+                "STDOUT"     :
                 {
                     "type" : "regex",
                     "must" : "OK"
@@ -53,7 +53,7 @@
             "opts" :
             {
                 "ARGV" : "1",
-                "stdout" :
+                "STDOUT" :
                 {
                     "type" : "int_eq",
                     "must" : "1"
@@ -68,7 +68,7 @@
             "opts" :
             {
                 "ARGV" : "2 3",
-                "stdout" :
+                "STDOUT" :
                 {
                     "type" : "regex",
                     "must" : "2\\s*3"

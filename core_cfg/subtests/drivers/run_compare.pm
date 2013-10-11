@@ -25,7 +25,7 @@ sub Run
     my $stdin_cmd;
     if ( $r_opts->{STDIN})
     {
-        $stdin_cmd = "echo \'$r_opts->{STDIN}\'| ";
+        $stdin_cmd = "echo \'$r_opts->{STDIN}\' | ";
     }
     elsif( $r_opts->{STDIN_FILE})
     {
@@ -39,19 +39,19 @@ sub Run
 
     my $run_res = &Execute( $cmd);
 
-    if ( !&CheckByType( $r_opts->{code}{type}, $run_res->{code}, $r_opts->{code}{must}))
+    if ( !&CheckByType( $r_opts->{CODE}{type}, $run_res->{code}, $r_opts->{CODE}{must}))
     {
         $r_res->{code} = $RUNFAIL;
         $r_res->{done} = 1;
         $r_res->{msg}  = "RUN FAIL :\ncode: $run_res->{code}\nstderr: $run_res->{stderr}\n";
     }
-    elsif ( !&CheckByType( $r_opts->{code}{type}, $run_res->{stdout}, $r_opts->{stdout}{must}))
+    elsif ( !&CheckByType( $r_opts->{STDOUT}{type}, $run_res->{stdout}, $r_opts->{STDOUT}{must}))
     {
         $r_res->{code} = $CMPFAIL;
         $r_res->{done} = 1;
         $r_res->{msg}  = "COMPARE FAIL :\nstdout: $run_res->{stdout}";
     }
-    elsif ( !&CheckByType( $r_opts->{stderr}{type}, $run_res->{stderr}, $r_opts->{stderr}{must}))
+    elsif ( !&CheckByType( $r_opts->{STDERR}{type}, $run_res->{stderr}, $r_opts->{STDERR}{must}))
     {
         $r_res->{code} = $CMPFAIL;
         $r_res->{done} = 1;
