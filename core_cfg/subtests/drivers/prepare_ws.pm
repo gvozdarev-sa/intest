@@ -16,17 +16,13 @@ sub Run
     my $r_opts = shift;
     my $r_conf = shift;
 
-    my $ws = &GetWs( );
+    my $user = &GetUser( );
 
-    if ( $r_opts->{clean_ws})
-    {
-        my $res;
-        $res = &Execute( "rm -rf \"$ws\"");
-        return $FAIL if ( $res->{code});
-
-        $res = &Execute( "mkdir -p \"$ws\"");
-        return $FAIL if ( $res->{code});
-    }
+    my $r_mkws = &Execute( "mkdir -p \"$r_conf->{global_ws}\" && mktemp -d $r_conf->{global_ws}/$user.XXXX");
+    return $FAIL if ( $r_mkws->{code});
+    chomp $r_mkws->{stdout};
+    my $ws = $r_mkws->{stdout};
+    &SetWs    ( $ws);
 
     if ( $r_opts->{dirs_to_mk})
     {
@@ -50,9 +46,9 @@ sub Run
         }
     }
 
-    if ( $r_opts->{conf_to_cp})
+    if ( $r_opts->{cfg_to_cp})
     {
-        my @items = map{ $_ = "$r_conf->{conf}/$_" ; } split( ",",  $r_opts->{conf_to_cp});
+        my @items = map{ $_ = &State::GetCfg( ) . "/$_" ; } split( ",",  $r_opts->{cfg_to_cp});
 
         foreach my $item ( @items)
         {

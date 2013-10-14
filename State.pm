@@ -26,6 +26,7 @@ require Exporter;
 @ISA    = qw( Exporter );
 @EXPORT = qw(
 SetSrc      GetSrc
+SetCfg      GetCfg
 SetWs       GetWs
 SetUser     GetUser
 SetEmail    GetEmail
@@ -54,6 +55,19 @@ sub GetSrc
     return $State{src};
 }
 ####
+sub SetCfg
+{
+    my $cfg = shift;
+    ###
+    $State{cfg} = $cfg;
+}
+
+sub GetCfg
+{
+    return $State{cfg};
+}
+####
+
 sub SetWs
 {
     my $src = shift;

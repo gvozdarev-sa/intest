@@ -25,7 +25,7 @@ sub Run
     my $stdin_cmd;
     if ( $r_opts->{STDIN})
     {
-        $stdin_cmd = "echo \'$r_opts->{STDIN}\' | ";
+        $stdin_cmd = "echo -n \'$r_opts->{STDIN}\' | ";
     }
     elsif( $r_opts->{STDIN_FILE})
     {

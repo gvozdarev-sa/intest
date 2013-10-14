@@ -6,7 +6,7 @@
         "src_file"  : "main.c",
         "bin"       : "bin/a.out",
         "compiler"  : "gcc",
-        "FLAGS"     : " -d -O2",
+        "FLAGS"     : " -O2 ",
         "libs"      : ""
     }
 }

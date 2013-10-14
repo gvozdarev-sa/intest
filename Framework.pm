@@ -352,7 +352,6 @@ sub LoadTest($$)
     my $test_name = shift;
     my $cfg_dir   = shift;
     ###
-
     return &LoadJSON( "$cfg_dir/tests/$test_name.json");
 }
 
@@ -377,12 +376,13 @@ sub LoadTests($$)
     my $r_tests_list = &LoadJSON( $tests_file);
 
     my $tests = {};
-    foreach my $test_name ( @{ $r_tests_list->{tests}})
+    foreach my $test_file ( @{ $r_tests_list->{tests}})
     {
-        &Print( "  loading $test_name");
-        my $test = &LoadTest( $test_name, $cfg_dir);
+        &Print( "  loading $test_file");
+        my $test = &LoadTest( $test_file, $cfg_dir);
 
-        $tests->{ $test->{name}} = $test;
+        $tests->{ $test->{name}}          = $test;
+        $tests->{ $test->{name}}{cfg_dir} = "$cfg_dir/$test_file";
     }
 
     return $tests;

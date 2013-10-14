@@ -7,17 +7,17 @@
         "STDIN" : "",
     //  "STDIN_FILE" : "file in ws",
         "ARGV"  : "",
-        "code"  :
+        "CODE"  :
         {
             "type" : "int_eq",
             "must" : 0
         },
-        "stdout" :
+        "STDOUT" :
         {
             "type" : "regex",
             "must" : "OK"
         },
-        "stderr" :
+        "STDERR" :
         {
             "type" : "regex",
             "must" : "^$"

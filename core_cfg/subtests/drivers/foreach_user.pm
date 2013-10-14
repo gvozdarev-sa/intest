@@ -64,16 +64,10 @@ sub Run
     {
         &PrintWarn( "Run test for user : $user");
 
-        my $r_mkws = &Execute( "mkdir -p \"$r_conf->{global_ws}\" && mktemp -d $r_conf->{global_ws}/$user.$r_opts->{test}.XXXX");
-        #TODO check code
-        chomp $r_mkws->{stdout};
-        &SetWs    ( $r_mkws->{stdout});
-
-        #TODO &SetTestLog( "&GetWs( )/log");
-
-        &SetSrc   ( "$r_conf->{global_src}/$r_all_users->{ $user}{path}/$r_opts->{test}");
         &SetUser  ( $user);
         &SetEmail ( $user);
+        &SetSrc   ( "$r_conf->{global_src}/$r_all_users->{ $user}{path}/$r_opts->{test}");
+        &SetCfg   (  $r_conf->{tests}{ $r_opts->{test}}{cfg_dir});
 
         my %Opts;
         $r_res->{items_res}{ $user} =  &Framework::RunTest( $r_opts->{test}, \%Opts);

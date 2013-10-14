@@ -33,8 +33,18 @@ sub Run
     }
 
 
+    if ( $r_opts->{clean_all})
+    {
+        my $ws = &State::GetWs( );
+        my $res = &Execute( "rm -rf \"$ws\"");
+        if ( $res->{code})
+        {
+            return $FAIL;
+        }
+        return $PASS;
+    }
 
-    my $r_items_to_rm = ( $r_opts->{clean_all}) ? (  "*" ) : ( $r_opts->{dirs_to_rm});
+    my $r_items_to_rm = $r_opts->{dirs_to_rm};
 
     if ( $r_items_to_rm)
     {

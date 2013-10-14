@@ -173,7 +173,7 @@ sub Execute
     $res{stderr} = $stderr;
     $res{code}   = $return;
 
-    if ( $res{code} != $PASS)
+    if ( $res{code} != $PASS || $res{stderr} ne '')
     {
         &PrintWarn( "  return code $res{code}\n    with stdout:\n$res{stdout}\n    with stderr:\n$res{stderr}", 0);
     }
